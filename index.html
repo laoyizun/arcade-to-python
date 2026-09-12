@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>arcade->python 课程</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    padding: 40px 20px;
+    line-height: 1.5;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  .header { text-align: center; margin-bottom: 50px; }
+  .header h1 {
+    font-size: 44px;
+    color: #67217a;
+    margin-bottom: 14px;
+    font-weight: 700;
+  }
+  .header p {
+    font-size: 16px;
+    color: #666;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  /* 课程卡片 */
+  .lesson {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .lesson:hover { box-shadow: 0 4px 16px rgba(103,33,122,0.15); }
+
+  .lesson-header {
+    display: flex;
+    align-items: center;
+    padding: 20px 24px;
+    cursor: pointer;
+    user-select: none;
+    background: white;
+    border-left: 6px solid #ccc;
+  }
+  .lesson[data-status="open"] .lesson-header { border-left-color: #f3a21c; }
+  .lesson[data-status="coming"] .lesson-header {
+    cursor: not-allowed;
+    background: #fafafa;
+    opacity: 0.6;
+  }
+
+  .lesson-thumb {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 22px;
+    font-weight: 700;
+    margin-right: 18px;
+    flex-shrink: 0;
+  }
+  .lesson[data-color="1"] .lesson-thumb { background: linear-gradient(135deg, #f3a21c, #f8c961); }
+  .lesson[data-color="2"] .lesson-thumb { background: linear-gradient(135deg, #72acc8, #a4cce0); }
+  .lesson[data-color="3"] .lesson-thumb { background: linear-gradient(135deg, #67217a, #b35b8e); }
+  .lesson[data-color="4"] .lesson-thumb { background: linear-gradient(135deg, #8a4ba0, #b07ec0); }
+  .lesson[data-color="5"] .lesson-thumb { background: linear-gradient(135deg, #e08c45, #f0b58b); }
+  .lesson[data-color="6"] .lesson-thumb { background: linear-gradient(135deg, #d36c2c, #e89260); }
+  .lesson[data-color="7"] .lesson-thumb { background: linear-gradient(135deg, #4caf50, #81c784); }
+  .lesson[data-color="8"] .lesson-thumb { background: linear-gradient(135deg, #e53935, #ef5350); }
+
+  .lesson-info { flex: 1; }
+  .lesson-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+  }
+  .lesson-subtitle {
+    font-size: 13px;
+    color: #888;
+  }
+
+  .lesson-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .badge {
+    background: #67217a;
+    color: white;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+  .badge-new { background: #f3a21c; }
+  .badge-soon { background: #aaa; }
+  .arrow {
+    color: #aaa;
+    font-size: 18px;
+    transition: transform 0.2s;
+  }
+  .lesson[data-expanded="true"] .arrow { transform: rotate(90deg); }
+
+  /* 展开内容 */
+  .lesson-body {
+    display: none;
+    padding: 0 24px 20px 102px;
+    background: #fafafa;
+    border-top: 1px solid #eee;
+  }
+  .lesson[data-expanded="true"] .lesson-body { display: block; }
+
+  .lesson-desc {
+    color: #666;
+    font-size: 14px;
+    margin: 16px 0 14px 0;
+    padding: 12px 14px;
+    background: #f0eaf3;
+    border-left: 3px solid #67217a;
+    border-radius: 4px;
+  }
+
+  .exercises {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .exercises li {
+    margin-bottom: 8px;
+  }
+  .exercises a {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background: white;
+    border: 1px solid #e0d8e3;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #333;
+    transition: all 0.15s;
+  }
+  .exercises a:hover {
+    background: #f5eef7;
+    border-color: #67217a;
+    transform: translateX(4px);
+  }
+  .exercises .ex-icon {
+    font-size: 18px;
+    margin-right: 12px;
+    width: 24px;
+    text-align: center;
+  }
+  .ex-text { flex: 1; }
+  .ex-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+  }
+  .ex-desc {
+    font-size: 12px;
+    color: #888;
+    margin-top: 2px;
+  }
+  .ex-link {
+    color: #67217a;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .footer {
+    text-align: center;
+    color: #999;
+    font-size: 13px;
+    margin-top: 50px;
+    padding-top: 24px;
+    border-top: 1px solid #ddd;
+  }
+  .footer a { color: #67217a; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>arcade-&gt;python</h1>
+    <p>Python 编程入门课程 - 从图形化编程迁移到文本编程。<br>通过 8 节课掌握 Python 的 4 个核心概念：变量、运算符、if/else、循环，在"星际冒险"游戏项目中实践。</p>
+  </div>
+
+  <!-- L1 开放 -->
+  <div class="lesson" data-status="open" data-color="1" data-expanded="true">
+    <div class="lesson-header" onclick="toggleLesson(this)">
+      <div class="lesson-thumb">L1</div>
+      <div class="lesson-info">
+        <div class="lesson-title">变量</div>
+        <div class="lesson-subtitle">认识 Python 变量，掌握定义变量和改值两个基本操作</div>
+      </div>
+      <div class="lesson-meta">
+        <span class="badge badge-new">NEW · 5 个练习</span>
+        <span class="arrow">▶</span>
+      </div>
+    </div>
+    <div class="lesson-body">
+      <div class="lesson-desc">
+        <strong>本节课</strong>：学习 Python 变量的定义、改值。在"星际冒险"游戏中应用 life 生命值。共 5 个独立练习，点击进入 MakeCode 练习。
+      </div>
+      <ul class="exercises">
+        <li>
+          <a href="https://arcade.makecode.com/#tutorial:78610-82752-51824-91461" target="_blank">
+            <span class="ex-icon">📘</span>
+            <span class="ex-text">
+              <div class="ex-name">前段 · 知识引入</div>
+              <div class="ex-desc">5 个 step 讲解变量的定义、赋值、改值</div>
+            </span>
+            <span class="ex-link">开始 →</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://arcade.makecode.com/#tutorial:22018-16870-46318-69052" target="_blank">
+            <span class="ex-icon">✏️</span>
+            <span class="ex-text">
+              <div class="ex-name">练习 1 · 填空</div>
+              <div class="ex-desc">补全"每过一关 +100 分"的代码</div>
+            </span>
+            <span class="ex-link">开始 →</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://arcade.makecode.com/#tutorial:13070-75141-42283-94681" target="_blank">
+            <span class="ex-icon">🔍</span>
+            <span class="ex-text">
+              <div class="ex-name">练习 2 · 找错</div>
+              <div class="ex-desc">找出"life = life =+ 1" 里的错误</div>
+            </span>
+            <span class="ex-link">开始 →</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://arcade.makecode.com/#tutorial:26534-76576-99981-72291" target="_blank">
+            <span class="ex-icon">🔢</span>
+            <span class="ex-text">
+              <div class="ex-name">练习 3 · 追代码</div>
+              <div class="ex-desc">逐行执行 3 行代码，写出 life 最终值</div>
+            </span>
+            <span class="ex-link">开始 →</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://arcade.makecode.com/#tutorial:46740-73771-88426-36189" target="_blank">
+            <span class="ex-icon">🎮</span>
+            <span class="ex-text">
+              <div class="ex-name">长项目 · 学以致用</div>
+              <div class="ex-desc">把 life 变量加到"星际冒险"游戏里</div>
+            </span>
+            <span class="ex-link">开始 →</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- L2 -->
+  <div class="lesson" data-status="ready" data-color="2">
+    <div class="lesson-header" onclick="toggleLesson(this)">
+      <div class="lesson-thumb">L2</div>
+      <div class="lesson-info">
+        <div class="lesson-title">运算符</div>
+        <div class="lesson-subtitle">Python 算术运算符：+、-、*、/、//、%、**</div>
+      </div>
+      <div class="lesson-meta">
+        <span class="badge badge-new">NEW · 5 个练习</span>
+        <span class="arrow">▶</span>
+      </div>
+    </div>
+    <div class="lesson-body">
+      <div class="lesson-desc">
+        <strong>本节课</strong>：学习 Python 算术运算符（+、-、*、/、//、%、**）。在"星际冒险"里加入魔法金币和炸弹。
+      </div>
+      <ul class="exercises">
+        <li>
+          <a href="https://arcade.makecode.com/#tutorial:18226-43491-39221-00217" target="_blank">
+            <span class="ex-icon">📘</span>
+            <span class="ex-text">
+              <div class="ex-name">前段 · 运算符引入</div>
+              <div class="ex-desc">5 个 step 介绍 +、-、* 的用法和综合场景</div>
+            </span>
+            <span class="ex-link">开始 →</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://arcade.makecode.com/#tutorial:93114-08714-53288-29443" target="_blank">
+            <span class="ex-icon">🛒</span>
+            <span class="ex-text">
+              <div class="ex-name">练习 1 · 超市收银</div>
+              <div class="ex-desc">用 * 和 + 算草莓和汉堡的总价</div>
+            </span>
+            <span class="ex-link">开始 →</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://arcade.makecode.com/#tutorial:01515-06999-48024-88937" target="_blank">
+            <span class="ex-icon">🧧</span>
+            <span class="ex-text">
+              <div class="ex-name">练习 2 · 红包分配</div>
+              <div class="ex-desc">用 // 和 % 把 100 元分给 4 个人</div>
+            </span>
+            <span class="ex-link">开始 →</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://arcade.makecode.com/#tutorial:66181-40582-83889-24323" target="_blank">
+            <span class="ex-icon">👑</span>
+            <span class="ex-text">
+              <div class="ex-name">练习 3 · 国王金豆</div>
+              <div class="ex-desc">用 ** 算每多杀一只怪翻倍的奖励</div>
+            </span>
+            <span class="ex-link">开始 →</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://arcade.makecode.com/#tutorial:08801-92477-64633-66070" target="_blank">
+            <span class="ex-icon">💣</span>
+            <span class="ex-text">
+              <div class="ex-name">长项目 · 炸弹减半</div>
+              <div class="ex-desc">在星际冒险里加炸弹：撞到扣血 + 分数减半</div>
+            </span>
+            <span class="ex-link">开始 →</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="lesson" data-status="coming" data-color="3">
+    <div class="lesson-header">
+      <div class="lesson-thumb">L3</div>
+      <div class="lesson-info">
+        <div class="lesson-title">条件判断（if/else）</div>
+        <div class="lesson-subtitle">if/else 基础，根据条件执行不同代码</div>
+      </div>
+      <div class="lesson-meta">
+        <span class="badge badge-soon">即将推出</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson" data-status="coming" data-color="4">
+    <div class="lesson-header">
+      <div class="lesson-thumb">L4</div>
+      <div class="lesson-info">
+        <div class="lesson-title">条件判断深入</div>
+        <div class="lesson-subtitle">if/elif/else 多分支</div>
+      </div>
+      <div class="lesson-meta">
+        <span class="badge badge-soon">即将推出</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson" data-status="coming" data-color="5">
+    <div class="lesson-header">
+      <div class="lesson-thumb">L5</div>
+      <div class="lesson-info">
+        <div class="lesson-title">循环 while</div>
+        <div class="lesson-subtitle">while 循环</div>
+      </div>
+      <div class="lesson-meta">
+        <span class="badge badge-soon">即将推出</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson" data-status="coming" data-color="6">
+    <div class="lesson-header">
+      <div class="lesson-thumb">L6</div>
+      <div class="lesson-info">
+        <div class="lesson-title">循环 for</div>
+        <div class="lesson-subtitle">for 循环与 range</div>
+      </div>
+      <div class="lesson-meta">
+        <span class="badge badge-soon">即将推出</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson" data-status="coming" data-color="7">
+    <div class="lesson-header">
+      <div class="lesson-thumb">L7</div>
+      <div class="lesson-info">
+        <div class="lesson-title">综合应用</div>
+        <div class="lesson-subtitle">综合应用前 6 节知识</div>
+      </div>
+      <div class="lesson-meta">
+        <span class="badge badge-soon">即将推出</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson" data-status="coming" data-color="8">
+    <div class="lesson-header">
+      <div class="lesson-thumb">L8</div>
+      <div class="lesson-info">
+        <div class="lesson-title">终项目</div>
+        <div class="lesson-subtitle">综合项目，把"星际冒险"完善为完整游戏</div>
+      </div>
+      <div class="lesson-meta">
+        <span class="badge badge-soon">即将推出</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>课程部署在 <a href="https://github.com/laoyizun/wechatCourse/tree/main/arcade-to-python">GitHub</a>，通过 <a href="https://arcade.makecode.com">MakeCode Arcade</a> 渲染。</p>
+  </div>
+</div>
+
+<script>
+function toggleLesson(header) {
+  const lesson = header.parentElement;
+  if (lesson.dataset.status === 'coming') return;
+  const expanded = lesson.dataset.expanded === 'true';
+  lesson.dataset.expanded = expanded ? 'false' : 'true';
+}
+</script>
+</body>
+</html>
