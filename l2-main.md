@@ -6,297 +6,616 @@
 
 欢迎来到 L2 运算符。
 
-这一节课我们要学 Python 的运算符——`+`、`-`、`*`、`/`、`//`、`%`、`**` 这些符号让变量能做计算。
-
-~hint
 L1 我们学了变量——把数字存起来。
 
 L2 我们学运算符——把存起来的数字做加减乘除。
 
-运算符的核心是"算"，不是"调 API"。
-hint~
-
-## {2. 第一个运算符：`+` 加号}
-
-公主的飞船在星空里飞行。飞船下方会随机掉落金币。
+这一节课我们只关注 Python 的基础语法——不引入游戏 API。每个运算符配一个迷你练习，让你只看和写 Python 表达式。
 
 ~hint
-捡到金币，分数应该怎么变？
+本课涉及的运算符：
 
-对了——分数要 +1。这里 +1 用的是加号运算符——把分数加 1。
+- `+` 加号：把两个数相加
+- `-` 减号：把两个数相减
+- `*` 乘号：把两个数相乘
+- `/` 除号：把两个数相除（结果是浮点数，如 5 / 2 = 2.5）
+- `//` 整除：除完后只保留整数部分（5 // 2 = 2）
+- `%` 取余：除完后只保留余数（5 % 2 = 1）
+- `**` 幂运算：算 a 的 b 次方（2 ** 3 = 8）
 
-至于代码怎么写，右栏代码区已经写好示例，你只需要看就行。
+这 7 个运算符是 Python 算术的核心——不需要记 API，只记符号。
 hint~
 
-请你先在右栏编辑器里完成两件事：
+## {2. 加号 `+` —— 把两个数合起来}
 
-1. 定义一个分数变量，初始值是 0
-2. 玩家撞到金币时，分数加 1
+加号是最基础的运算符：把两个数加在一起。
+
+~hint
+数学写法：`3 + 8 = 11`
+
+Python 写法：`answer = a + b`（结果是 11）
+
+注意：MakeCode 里的 Python 是静态类型——变量要标注 `: number`。
+hint~
+
+请你算一下：`a` 是 3，`b` 是 8，加起来是多少？
 
 ~hint
 动手区：
 
-找到右栏代码里 `# ★ step 2：...` 的两段注释。
+右栏代码里已经写好 `a` 和 `b` 两个变量（都标注了 `: number`）。
 
-在第一段注释下面写：定义分数变量，初始值 0。
+你只需要在 `answer: number = ____` 这一行，把 `____` 换成 Python 加法表达式。
 
-在第二段注释下面写：金币碰撞时分数 +1（用加号运算符）。
-
-具体写法参考右栏代码区的 `# step 2:` 注释。
+参考右栏 `# step 2:` 注释。
 hint~
 
 #### ~ tutorialhint
 
 ```python
-# step 2 完成后整个项目长这样：
+# =============================================
+# ✏️ 你修改的区域
+# =============================================
+a: number = 3
+b: number = 8
+answer: number = a + b   # ← step 2: 用加号运算符把 a 和 b 加起来
+# =============================================
 
-myPlayer = sprites.create(sprites.castle.princessFront0, SpriteKind.player)
-myPlayer.setStayInScreen(True)
-controller.moveSprite(myPlayer, 100, 100)
-
-star = sprites.create(sprites.builtin.coin0, SpriteKind.food)
-star.setPosition(randint(0, 160), 0)
-star.setVelocity(0, 50)
-star.setBounceOnWall(True)
-
-score: number = 0  # 你这一步加的
-
-def on_on_overlap(sprite, otherSprite):
-    global score
-    score = score + 1  # 你这一步加的
-    otherSprite.setPosition(randint(0, 160), 0)
-sprites.on_overlap(SpriteKind.player, SpriteKind.food, on_on_overlap)
+# =============================================
+# 🔒 NPC 判定区（无需修改的代码）
+# =============================================
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+if answer == 11:
+    game.show_long_text("老师：'对！3 加 8 等于 11'", 1)
+else:
+    game.show_long_text("老师：'再算算哦'", 1)
+# =============================================
 ```
 
-## {3. 倍化：`*` 乘号}
+## {3. 减号 `-` —— 找零}
 
-星空里还有一种特别的星星——**魔法金币**。魔法金币比普通金币值钱 5 倍！
+减号：把一个数减去另一个数。最常见的场景是"找零"——付了 100，商品 25，找回多少？
 
 ~hint
-普通金币 +1 分，魔法金币 +5 分。
+数学写法：`100 - 25 = 75`
 
-魔法金币的奖励是普通金币的 5 倍——用乘号表示。
+Python 写法：`change = pay - price`
 
-乘号的核心：把一个数放大 N 倍。
-
-具体写法参考右栏代码区。
+跟加号一样：变量标注 `: number`，等号右边是减法表达式。
 hint~
 
-请你加一个魔法金币：
-
-1. 创建 `magic_star` sprite（同样用 coin0 图片）
-2. 玩家撞到 magic_star 时，score 加 5
+请你算一下：付了 `pay` 元，商品 `price` 元，找零是多少？
 
 ~hint
 动手区：
 
-找到右栏代码里 `# ★ step 3：...` 的两段注释。
+右栏代码里已经写好 `pay` 和 `price` 两个变量。
 
-第一段：取消 4 行注释——创建魔法金币 sprite（取消行首 `# ` 即可）。
+把 `change: number = ____` 这一行的 `____` 换成 Python 减法表达式。
 
-第二段：取消整段注释——魔法金币碰撞时分数 +5。
-
-魔法金币和普通金币都是"食物"类型，但需要分开的事件监听。
-
-你只需要专注在"把分数加 5"这一行——这是加号运算符的另一种应用。
+参考右栏 `# step 3:` 注释。
 hint~
 
 #### ~ tutorialhint
 
 ```python
-# step 3 完成后整个项目长这样：
+# =============================================
+# ✏️ 你修改的区域
+# =============================================
+pay: number = 100
+price: number = 25
+change: number = pay - price   # ← step 3: 用减号运算符算找零
+# =============================================
 
-myPlayer = sprites.create(sprites.castle.princessFront0, SpriteKind.player)
-myPlayer.setStayInScreen(True)
-controller.moveSprite(myPlayer, 100, 100)
-
-star = sprites.create(sprites.builtin.coin0, SpriteKind.food)
-star.setPosition(randint(0, 160), 0)
-star.setVelocity(0, 50)
-star.setBounceOnWall(True)
-
-score: number = 0
-
-def on_on_overlap(sprite, otherSprite):
-    global score
-    score = score + 1
-    otherSprite.setPosition(randint(0, 160), 0)
-sprites.on_overlap(SpriteKind.player, SpriteKind.food, on_on_overlap)
-
-# 你这一步新加的：
-magic_star = sprites.create(sprites.builtin.coin0, SpriteKind.food)
-magic_star.setPosition(randint(0, 160), 0)
-magic_star.setVelocity(0, 50)
-magic_star.setBounceOnWall(True)
-
-def on_on_overlap_magic(sprite, otherSprite):
-    global score
-    score = score + 5  # ← 这一步：乘号（其实是 +5，但用了"加"5 倍的思路）
-    otherSprite.setPosition(randint(0, 160), 0)
-sprites.on_overlap(SpriteKind.player, SpriteKind.food, on_on_overlap_magic)
+# =============================================
+# 🔒 NPC 判定区（无需修改的代码）
+# =============================================
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+if change == 75:
+    game.show_long_text("售货员：'对！找你 75 元'", 1)
+else:
+    game.show_long_text("售货员：'再算算哦'", 1)
+# =============================================
 ```
 
-## {4. 减号：`-` 与生命值}
+## {4. 乘号 `*` —— 单价 × 数量 = 总价}
 
-星空里还有炸弹——玩家撞到炸弹会扣血。
+乘号：算一个数的几倍。超市里最常用——单价乘以数量等于总价。
 
 ~hint
-加号是 +1，减号是 -1。
+数学写法：`6 × 5 = 30`
 
-减号的核心：把数减小。
+Python 写法：`total = price * count`
 
-具体写法参考右栏代码区。
+注意：跟数学不一样，Python 乘号是 `*`（星号），不是 `×`。
 hint~
 
-请你加一个炸弹 sprite，并写它的碰撞处理：
-
-1. 创建 bomb sprite
-2. 玩家撞到 bomb 时，life 减 1
+请你算一下：饮料 `price` 元一瓶，`count` 瓶，总价多少？
 
 ~hint
 动手区：
 
-找到右栏代码里 `# ★ step 4：...` 的四段注释。
+右栏代码里已经写好 `price` 和 `count` 两个变量。
 
-第一段：取消 2 行注释——定义生命值变量并显示给游戏。
+把 `total: number = ____` 这一行的 `____` 换成 Python 乘法表达式。
 
-第二段：取消 4 行注释——创建炸弹 sprite（用岩石当炸弹）。
-
-第三段：取消整段注释——炸弹碰撞时生命值 -1 并通知游戏。
-
-注意：生命值用 life 变量存储，更灵活——以后改 life 的初始值就是几条命。
-
-具体写法参考右栏代码区的 `# step 4:` 注释。
+参考右栏 `# step 4:` 注释。
 hint~
 
 #### ~ tutorialhint
 
 ```python
-# step 4 完成后整个项目长这样：
+# =============================================
+# ✏️ 你修改的区域
+# =============================================
+price: number = 6
+count: number = 5
+total: number = price * count   # ← step 4: 用乘号算总价
+# =============================================
 
-myPlayer = sprites.create(sprites.castle.princessFront0, SpriteKind.player)
-myPlayer.setStayInScreen(True)
-controller.moveSprite(myPlayer, 100, 100)
-
-star = sprites.create(sprites.builtin.coin0, SpriteKind.food)
-star.setPosition(randint(0, 160), 0)
-star.setVelocity(0, 50)
-star.setBounceOnWall(True)
-
-score: number = 0
-
-def on_on_overlap(sprite, otherSprite):
-    global score
-    score = score + 1
-    otherSprite.setPosition(randint(0, 160), 0)
-sprites.on_overlap(SpriteKind.player, SpriteKind.food, on_on_overlap)
-
-magic_star = sprites.create(sprites.builtin.coin0, SpriteKind.food)
-magic_star.setPosition(randint(0, 160), 0)
-magic_star.setVelocity(0, 50)
-magic_star.setBounceOnWall(True)
-
-def on_on_overlap_magic(sprite, otherSprite):
-    global score
-    score = score + 5
-    otherSprite.setPosition(randint(0, 160), 0)
-sprites.on_overlap(SpriteKind.player, SpriteKind.food, on_on_overlap_magic)
-
-# 你这一步新加的：
-life: number = 3  # 你这一步加的
-info.setLife(life)
-
-bomb = sprites.create(sprites.castle.rock0, SpriteKind.enemy)
-bomb.setPosition(randint(0, 160), 0)
-bomb.setVelocity(0, 50)
-bomb.setBounceOnWall(True)
-
-def on_on_overlap_bomb(sprite, otherSprite):
-    global life
-    life = life - 1  # ← 这一步：减号运算符
-    info.setLife(life)
-sprites.on_overlap(SpriteKind.player, SpriteKind.enemy, on_on_overlap_bomb)
+# =============================================
+# 🔒 NPC 判定区（无需修改的代码）
+# =============================================
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+if total == 30:
+    game.show_long_text("售货员：'对！5 瓶饮料一共 30 元'", 1)
+else:
+    game.show_long_text("售货员：'再算算哦'", 1)
+# =============================================
 ```
 
-## {5. 综合演示：超市收银}
+## {5. 整除 `//` 和取余 `%` —— 100 元分给 4 个人}
 
-我们已经学了 `+`、`-`、`*`——这些是**基本算术运算符**。
+整除（`//`）和取余（`%`）是一对兄弟：把一个数除以另一个数。
+
+- `//` 算"每人分到多少"（只看整数部分）
+- `%` 算"剩下多少"（只看余数）
 
 ~hint
-运算符的核心是"做计算"。常见的运算模式：
+经典场景：100 元分给 4 个人。
 
-- 累加：每次加一点（用加号）
-- 倍化：放大倍数（用乘号）
-- 减扣：每次减一点（用减号）
+- `100 // 4 = 25` —— 每人 25 元
+- `100 % 4 = 0` —— 没有剩余
 
-接下来 L2 中段的练习会综合应用这些运算符——做一个"超市收银系统"。
+如果 100 元分给 3 个人：
+- `100 // 3 = 33` —— 每人 33 元
+- `100 % 3 = 1` —— 还剩 1 元
 
-到练习 1 会见到：
-- 草莓 3 元/个
-- 汉堡 8 元/个
-- 算 3 草莓 + 2 汉堡的总价
-
-你需要用乘号和加号算出来：3 乘 3 加 8 乘 2 等于 25 元
+为什么需要 `%`：判断"能否整除"——`(n % m) == 0` 表示 n 能被 m 整除。
 hint~
 
-继续看下一关，进入练习 1。
+请你算一下：`total` 元分给 `people` 个人，每人多少、剩多少？
+
+~hint
+动手区：
+
+右栏代码里已经写好 `total` 和 `people` 两个变量。
+
+把 `each: number = ____` 和 `rest: number = ____` 这两行的 `____` 分别换成 Python 整除和取余表达式。
+
+参考右栏 `# step 5:` 注释。
+hint~
+
+#### ~ tutorialhint
+
+```python
+# =============================================
+# ✏️ 你修改的区域
+# =============================================
+total: number = 100
+people: number = 4
+each: number = total // people   # ← step 5: 用整除算每人多少
+rest: number = total % people   # ← step 5: 用取余算剩多少
+# =============================================
+
+# =============================================
+# 🔒 NPC 判定区（无需修改的代码）
+# =============================================
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+if each == 25 and rest == 0:
+    game.show_long_text("老师：'对！每人 25 元，剩 0 元'", 1)
+else:
+    game.show_long_text("老师：'再算算哦'", 1)
+# =============================================
+```
+
+## {6. 幂运算 `**` —— a 的 b 次方}
+
+幂运算符：算一个数的"几次方"。
+
+~hint
+经典场景：国王奖励翻倍——每多杀一只怪，奖励翻一倍。
+
+- 杀 0 只怪：`2 ** 0 = 1` 金豆
+- 杀 1 只怪：`2 ** 1 = 2` 金豆
+- 杀 3 只怪：`2 ** 3 = 8` 金豆
+- 杀 5 只怪：`2 ** 5 = 32` 金豆
+
+注意：`**` 是两个星号，不是 `^`。
+hint~
+
+请你算一下：`base` 的 `kills` 次方是多少？
+
+~hint
+动手区：
+
+右栏代码里已经写好 `base` 和 `kills` 两个变量。
+
+把 `reward: number = ____` 这一行的 `____` 换成 Python 幂运算表达式。
+
+参考右栏 `# step 6:` 注释。
+hint~
+
+#### ~ tutorialhint
+
+```python
+# =============================================
+# ✏️ 你修改的区域
+# =============================================
+base: number = 2
+kills: number = 3
+reward: number = base ** kills   # ← step 6: 用幂运算算奖励
+# =============================================
+
+# =============================================
+# 🔒 NPC 判定区（无需修改的代码）
+# =============================================
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+if reward == 8:
+    game.show_long_text("国王：'勇士，杀 3 只怪给你 8 金豆！'", 1)
+else:
+    game.show_long_text("国王：'再算算哦'", 1)
+# =============================================
+```
+
+## {7. 综合：3 个草莓 5 元/个，2 个汉堡 10 元/个，付 50 元}
+
+把上面学到的运算符都用上：买草莓 + 汉堡，付钱，找零。
+
+~hint
+计算分两步：
+
+1. `total = strawberry_count * strawberry_price + burger_count * burger_price`
+   - 用 `*` 算每种商品的小计，用 `+` 把小计加起来
+
+2. `change = pay - total`
+   - 用 `-` 算找零
+
+Python 运算优先级：`*` 比 `+` 先算，所以 `3 * 5 + 2 * 10` 不加括号也对（先算两个 `*`，再算 `+`）。
+hint~
+
+请你算一下：草莓 + 汉堡的总价是多少？付 50 元，找零多少？
+
+~hint
+动手区：
+
+右栏代码里已经写好 4 个商品变量 + `pay`。
+
+把 `total: number = ____` 和 `change: number = ____` 这两行的 `____` 分别换成 Python 表达式。
+
+参考右栏 `# step 7:` 注释。
+hint~
+
+#### ~ tutorialhint
+
+```python
+# =============================================
+# ✏️ 你修改的区域
+# =============================================
+strawberry_count: number = 3
+strawberry_price: number = 5
+burger_count: number = 2
+burger_price: number = 10
+pay: number = 50
+total: number = strawberry_count * strawberry_price + burger_count * burger_price   # ← step 7: 用 * 和 + 算总价
+change: number = pay - total   # ← step 7: 用 - 算找零
+# =============================================
+
+# =============================================
+# 🔒 NPC 判定区（无需修改的代码）
+# =============================================
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+if total == 35 and change == 15:
+    game.show_long_text("售货员：'对！总价 35 元，找你 15 元'", 1)
+else:
+    game.show_long_text("售货员：'再算算哦'", 1)
+# =============================================
+```
+
+## {8. 课程总结 @showdialog}
+
+恭喜你完成 L2 运算符的所有练习！
+
+~hint
+本节课回顾：
+
+- `+`：把两个数加在一起
+- `-`：把一个数减去另一个数
+- `*`：把一个数放大几倍
+- `/`：普通除法，结果是浮点数
+- `//`：整除，只留整数部分
+- `%`：取余，只留余数
+- `**`：幂运算，算 a 的 b 次方
+
+这些运算符可以任意组合——Python 用标准的"先乘除后加减"运算优先级。
+
+下一步预告：
+- 接下来 L2 中段有 3 个独立练习（超市收银、红包分配、国王金豆）
+- L2 长项目是一个综合运算场景
+hint~
+
+继续点击下一步，进入 L2 中段的独立练习。
 
 ```python-template
 # =============================================
 # 📌 模板说明
-# 整个项目从这一段开始——下面每行都用 "# step X:" 注释标好是哪一步要写的。
+# 这一节课只教运算符，不引入游戏 API。
+# 下面每段都用 "# step X:" 注释标好是哪一步要写的。
 # 步骤里没教到的代码已用 "# " 注释掉，你不用管它。
 # 走到那一步时，老师会告诉你取消注释，或者自己写新代码。
 # =============================================
 
-# 创建公主玩家（开箱即用）
-myPlayer = sprites.create(sprites.castle.princessFront0, SpriteKind.player)
-myPlayer.setStayInScreen(True)
-controller.moveSprite(myPlayer, 100, 100)
+# ★ step 2：写加号表达式——把 a 和 b 加起来
+a: number = 3
+b: number = 8
+answer: number = ____   # step 2: 用 + 算 3 + 8
 
-# 创建普通金币（开箱即用）
-star = sprites.create(sprites.builtin.coin0, SpriteKind.food)
-star.setPosition(randint(0, 160), 0)
-star.setVelocity(0, 50)
-star.setBounceOnWall(True)
+# ★ step 3：写减号表达式——算找零
+pay: number = 100
+price: number = 25
+change: number = ____   # step 3: 用 - 算 100 - 25
 
-# ★ step 2：在"你修改的区域"加一行——定义分数变量并设初始值 0
-score: number = 0  # step 2: 定义分数变量
+# ★ step 4：写乘号表达式——算饮料总价
+drink_price: number = 6
+drink_count: number = 5
+drink_total: number = ____   # step 4: 用 * 算单价 × 数量
 
-# ★ step 2：写完分数变量后，再写撞到金币时分数 +1 的事件
-def on_on_overlap(sprite, otherSprite):  # step 2: 金币碰撞处理
-    global score
-    score = score + 1  # ← step 2: 用加号运算符把分数加 1
-    otherSprite.setPosition(randint(0, 160), 0)
-sprites.on_overlap(SpriteKind.player, SpriteKind.food, on_on_overlap)
+# ★ step 5：写整除和取余表达式——分账
+total_money: number = 100
+people: number = 4
+each_get: number = ____   # step 5: 用 // 算每人多少
+rest_money: number = ____   # step 5: 用 % 算剩多少
 
-# ★ step 3：取消下面三行的注释——创建魔法金币（同样的 coin0 图片）
-# magic_star = sprites.create(sprites.builtin.coin0, SpriteKind.food)  # step 3: 创建魔法金币
-# magic_star.setPosition(randint(0, 160), 0)  # step 3: 放在屏幕上方随机位置
-# magic_star.setVelocity(0, 50)  # step 3: 设置下落速度
-# magic_star.setBounceOnWall(True)  # step 3: 撞到屏幕底反弹
+# ★ step 6：写幂运算表达式——国王奖励
+reward_base: number = 2
+kill_count: number = 3
+reward: number = ____   # step 6: 用 ** 算 2 的 3 次方
 
-# ★ step 3：取消下面整段注释——魔法金币的碰撞处理（分数加 5）
-# def on_on_overlap_magic(sprite, otherSprite):  # step 3: 魔法金币碰撞
-#     global score
-#     score = score + 5  # ← step 3: 用加号运算符把分数加 5
-#     otherSprite.setPosition(randint(0, 160), 0)
-# sprites.on_overlap(SpriteKind.player, SpriteKind.food, on_on_overlap_magic)
-
-# ★ step 4：取消下面两行——定义生命值变量并初始化游戏
-# life: number = 3  # step 4: 定义生命值变量
-# info.setLife(life)  # step 4: 把生命值告诉游戏（这样屏幕右上角会显示心形图标）
-
-# ★ step 4：取消下面三行——创建炸弹 sprite
-# bomb = sprites.create(sprites.castle.rock0, SpriteKind.enemy)  # step 4: 创建炸弹
-# bomb.setPosition(randint(0, 160), 0)  # step 4: 放在屏幕上方
-# bomb.setVelocity(0, 50)  # step 4: 设置下落速度
-# bomb.setBounceOnWall(True)  # step 4: 撞到屏幕底反弹
-
-# ★ step 4：取消下面整段注释——炸弹的碰撞处理（生命值减 1）
-# def on_on_overlap_bomb(sprite, otherSprite):  # step 4: 炸弹碰撞
-#     global life
-#     life = life - 1  # ← step 4: 用减号运算符把生命值减 1
-#     info.setLife(life)  # step 4: 把新的生命值告诉游戏
-# sprites.on_overlap(SpriteKind.player, SpriteKind.enemy, on_on_overlap_bomb)
+# ★ step 7：综合——草莓 + 汉堡 + 找零
+strawberry_count: number = 3
+strawberry_price: number = 5
+burger_count: number = 2
+burger_price: number = 10
+pay: number = 50
+total: number = ____   # step 7: 用 * 和 + 算总价
+change: number = ____   # step 7: 用 - 算找零
 ```

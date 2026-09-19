@@ -13,11 +13,11 @@ Python 入门课程 - 从图形化编程迁移到文本编程。
 | L1 独立练习 2：变量名大小写（改错）| [打开](https://arcade.makecode.com/#tutorial:13070-75141-42283-94681) |
 | L1 独立练习 3：变量覆盖（改错）| [打开](https://arcade.makecode.com/#tutorial:26534-76576-99981-72291) |
 | L1 长项目（学以致用）| [打开](https://arcade.makecode.com/#tutorial:46740-73771-88426-36189) |
-| L2 前段（运算符）| [打开](https://arcade.makecode.com/#tutorial:18226-43491-39221-00217) |
+| L2 前段（运算符）| [打开](https://arcade.makecode.com/#tutorial:43728-84416-78823-93121) |
 | L2 独立练习 1：超市收银（填空）| [打开](https://arcade.makecode.com/#tutorial:10899-16147-74503-82999) |
 | L2 独立练习 2：红包分配（填空）| [打开](https://arcade.makecode.com/#tutorial:21670-43179-22034-85571) |
 | L2 独立练习 3：国王金豆（填空）| [打开](https://arcade.makecode.com/#tutorial:16474-51634-75253-19389) |
-| L2 长项目：炸弹减半 | [打开](https://arcade.makecode.com/#tutorial:08801-92477-64633-66070) |
+| L2 长项目：周末超市扫货 | [打开](https://arcade.makecode.com/#tutorial:80779-29030-60856-68283) |
 
 ## 课程简介
 
